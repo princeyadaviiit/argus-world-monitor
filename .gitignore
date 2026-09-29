@@ -1,0 +1,16 @@
+# Cloned target repository (has its own git repo)
+worldmonitor/
+
+# Python cache and environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Editor & System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,22 @@
+=== ARGUS Evidence: Middleware Bot Filter Bypass ===
+Target Vulnerability: CWE-269 / OWASP A07:2021
+Vulnerable File: worldmonitor/middleware.ts:346-353
+
+Vulnerable Code Snippet:
+  const WM_KEY_SHAPE = /^wm_[a-f0-9]{40,64}$/;
+  const apiKey = request.headers.get('x-worldmonitor-key') ?? request.headers.get('x-api-key') ?? '';
+  if (WM_KEY_SHAPE.test(apiKey)) {
+    return; // <--- Bypasses bot filter without server-side validation at the edge!
+  }
+  if (BOT_UA.test(ua) || !ua || ua.length < 10) {
+    return Response.json(agentRequestPolicy.blockedResponse, { status: 403, ... });
+  }
+
+Test Scraper UA: 'python-requests/2.31.0' (Matches BOT_UA regex: True)
+Synthetic Key Header: 'x-api-key: wm_0000000000000000000000000000000000000000' (Matches WM_KEY_SHAPE: True)
+
+Outcome:
+Without key header: Request is intercepted by middleware and rejected with HTTP 403 Forbidden.
+With synthetic key header: Request passes through middleware completely unblocked.
+On endpoints where downstream authentication is not mandatory (or for public API routes),
+scrapers completely circumvent the automated crawler protection.

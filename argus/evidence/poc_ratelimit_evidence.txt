@@ -1,0 +1,18 @@
+=== ARGUS Evidence: Rate Limiting Fail-Open Architecture ===
+Target Vulnerability: CWE-770 (Allocation of Resources Without Limits) / OWASP A04:2021
+Vulnerable File: worldmonitor/api/_rate-limit.js
+
+Extracted Code Flow Analysis:
+1. Missing Redis Configuration:
+   When UPSTASH_REDIS_REST_URL or UPSTASH_REDIS_REST_TOKEN is not configured,
+   checkRateLimit() immediately exits with `return null;` allowing every request unconditionally.
+
+2. Runtime Degradation Fallback:
+   If the upstream Upstash REST API times out (>1000ms) or returns an HTTP 5xx error,
+   the catch block logs a silent error and returns `null` while setting header:
+   `X-RateLimit-Mode: degraded`
+
+Impact:
+An attacker can intentionally degrade the rate limiter by exhausting Redis connection quotas,
+causing all subsequent requests to costly downstream services (Nominatim, AI search, GIS data)
+to run completely unthrottled and free of cost/burst limits.

@@ -1,0 +1,700 @@
+{
+  "scan_metadata": {
+    "target": "World Monitor (Local Repository Instance)",
+    "scanner": "ARGUS Security Engine (SIH26163)",
+    "timestamp": "2026-09-29T12:30:00Z",
+    "total_raw_findings": 14,
+    "total_correlated_vulnerabilities": 12,
+    "severity_breakdown": {
+      "Critical": 0,
+      "High": 1,
+      "Medium": 11,
+      "Low": 0
+    }
+  },
+  "vulnerabilities": [
+    {
+      "id": "ARGUS-CONFIRMED-009",
+      "key": "CWE-770::api/_rate-limit.js",
+      "title": "Unmetered Resource Consumption via Fail-Open Rate Limiter Degradation",
+      "cwe": "CWE-770",
+      "owasp": "A04:2021-Insecure Design",
+      "severity": "High",
+      "cvss_score": 7.5,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "affected_component": "api/_rate-limit.js, api/_rate-limit-fallback.js",
+      "description": "The edge function rate limiting subsystem degrades availability-first. When Upstash Redis is unreachable, unconfigured, or times out, checkRateLimit() returns null (allowing requests) and emits `X-RateLimit-Mode: degraded`. This leaves expensive upstream endpoints (such as Nominatim reverse geocode and chat analyst LLM calls) vulnerable to unbounded denial-of-service and provider API quota exhaustion.",
+      "remediation": "For high-cost and third-party bounded endpoints (such as Nominatim and AI inference), enforce fail-closed rate limiting or in-memory token buckets rather than complete unthrottled fail-open.",
+      "confidence": "low",
+      "tools": [
+        "code-audit"
+      ],
+      "evidence_count": 3,
+      "findings": [
+        {
+          "id": "ARGUS-VULN-002",
+          "title": "Unmetered Resource Consumption via Fail-Open Rate Limiter Degradation",
+          "tool": "code-audit",
+          "rule_id": "rate-limit-fail-open-architecture",
+          "file": "api/_rate-limit.js",
+          "url": null,
+          "line": 52,
+          "cwe": "CWE-770",
+          "owasp": "A04:2021-Insecure Design",
+          "raw_severity": "High",
+          "description": "The edge function rate limiting subsystem degrades availability-first. When Upstash Redis is unreachable, unconfigured, or times out, checkRateLimit() returns null (allowing requests) and emits `X-RateLimit-Mode: degraded`. This leaves expensive upstream endpoints (such as Nominatim reverse geocode and chat analyst LLM calls) vulnerable to unbounded denial-of-service and provider API quota exhaustion.",
+          "evidence": [
+            "api/_rate-limit.js: catch block and missing-env check return null unconditionally",
+            "Emits header 'X-RateLimit-Mode: degraded'",
+            "Verified non-destructive PoC in argus/poc/poc_ratelimit_failopen.py"
+          ],
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "cvss_score": 7.5,
+          "cvss_severity": null,
+          "affected_component": "api/_rate-limit.js, api/_rate-limit-fallback.js",
+          "remediation": "For high-cost and third-party bounded endpoints (such as Nominatim and AI inference), enforce fail-closed rate limiting or in-memory token buckets rather than complete unthrottled fail-open.",
+          "confidence": "high",
+          "poc_steps": [
+            "Inspect api/_rate-limit.js error-handling branch",
+            "Verify unconfigured Redis returns null",
+            "Run python -m argus.poc.poc_ratelimit_failopen"
+          ],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "api/_rate-limit.js: catch block and missing-env check return null unconditionally",
+        "Emits header 'X-RateLimit-Mode: degraded'",
+        "Verified non-destructive PoC in argus/poc/poc_ratelimit_failopen.py"
+      ]
+    },
+    {
+      "id": "ARGUS-CONFIRMED-001",
+      "key": "CWE-22::package.json",
+      "title": "@vitest/mocker: Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock",
+      "cwe": "CWE-22",
+      "owasp": null,
+      "severity": "Medium",
+      "cvss_score": 6.5,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+      "affected_component": "package.json",
+      "description": "Package @vitest/mocker (range: >=2.1.0 <4.1.11) has vulnerability: Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock. See advisory: https://github.com/advisories/GHSA-82fw-gwwq-j7x9",
+      "remediation": "Apply input sanitization, strict boundary checks, and defensive controls.",
+      "confidence": "medium",
+      "tools": [
+        "npm-audit"
+      ],
+      "evidence_count": 4,
+      "findings": [
+        {
+          "id": "npm-audit-@vitest/mocker-1",
+          "title": "@vitest/mocker: Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock",
+          "tool": "npm-audit",
+          "rule_id": "npm-1193684",
+          "file": "package.json",
+          "url": "https://github.com/advisories/GHSA-82fw-gwwq-j7x9",
+          "line": null,
+          "cwe": "CWE-22",
+          "owasp": null,
+          "raw_severity": "Medium",
+          "description": "Package @vitest/mocker (range: >=2.1.0 <4.1.11) has vulnerability: Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock. See advisory: https://github.com/advisories/GHSA-82fw-gwwq-j7x9",
+          "evidence": [
+            "Dependency: @vitest/mocker",
+            "Advisory: https://github.com/advisories/GHSA-82fw-gwwq-j7x9"
+          ],
+          "cvss_vector": null,
+          "cvss_score": null,
+          "cvss_severity": null,
+          "affected_component": null,
+          "remediation": null,
+          "confidence": "medium",
+          "poc_steps": [],
+          "status": "confirmed"
+        },
+        {
+          "id": "npm-audit-vitest-9",
+          "title": "vitest: Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock",
+          "tool": "npm-audit",
+          "rule_id": "npm-1193683",
+          "file": "package.json",
+          "url": "https://github.com/advisories/GHSA-82fw-gwwq-j7x9",
+          "line": null,
+          "cwe": "CWE-22",
+          "owasp": null,
+          "raw_severity": "Medium",
+          "description": "Package vitest (range: >=2.1.0 <4.1.11) has vulnerability: Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock. See advisory: https://github.com/advisories/GHSA-82fw-gwwq-j7x9",
+          "evidence": [
+            "Dependency: vitest",
+            "Advisory: https://github.com/advisories/GHSA-82fw-gwwq-j7x9"
+          ],
+          "cvss_vector": null,
+          "cvss_score": null,
+          "cvss_severity": null,
+          "affected_component": null,
+          "remediation": null,
+          "confidence": "medium",
+          "poc_steps": [],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "Dependency: @vitest/mocker",
+        "Advisory: https://github.com/advisories/GHSA-82fw-gwwq-j7x9",
+        "Dependency: vitest",
+        "Advisory: https://github.com/advisories/GHSA-82fw-gwwq-j7x9"
+      ]
+    },
+    {
+      "id": "ARGUS-CONFIRMED-002",
+      "key": "CWE-835::package.json",
+      "title": "image-size: image-size: JXL and HEIF parsers allow denial of service through infinite loops",
+      "cwe": "CWE-835",
+      "owasp": null,
+      "severity": "Medium",
+      "cvss_score": 6.5,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+      "affected_component": "package.json",
+      "description": "Package image-size (range: >=1.2.0 <=2.0.2) has vulnerability: image-size: JXL and HEIF parsers allow denial of service through infinite loops. See advisory: https://github.com/advisories/GHSA-5p2g-fcmc-qvqq",
+      "remediation": "Apply input sanitization, strict boundary checks, and defensive controls.",
+      "confidence": "medium",
+      "tools": [
+        "npm-audit"
+      ],
+      "evidence_count": 4,
+      "findings": [
+        {
+          "id": "npm-audit-image-size-2",
+          "title": "image-size: image-size: JXL and HEIF parsers allow denial of service through infinite loops",
+          "tool": "npm-audit",
+          "rule_id": "npm-1239765",
+          "file": "package.json",
+          "url": "https://github.com/advisories/GHSA-5p2g-fcmc-qvqq",
+          "line": null,
+          "cwe": "CWE-835",
+          "owasp": null,
+          "raw_severity": "High",
+          "description": "Package image-size (range: >=1.2.0 <=2.0.2) has vulnerability: image-size: JXL and HEIF parsers allow denial of service through infinite loops. See advisory: https://github.com/advisories/GHSA-5p2g-fcmc-qvqq",
+          "evidence": [
+            "Dependency: image-size",
+            "Advisory: https://github.com/advisories/GHSA-5p2g-fcmc-qvqq"
+          ],
+          "cvss_vector": null,
+          "cvss_score": null,
+          "cvss_severity": null,
+          "affected_component": null,
+          "remediation": null,
+          "confidence": "medium",
+          "poc_steps": [],
+          "status": "confirmed"
+        },
+        {
+          "id": "npm-audit-image-size-3",
+          "title": "image-size: image-size: ICNS parser allows denial of service through an infinite loop",
+          "tool": "npm-audit",
+          "rule_id": "npm-1239766",
+          "file": "package.json",
+          "url": "https://github.com/advisories/GHSA-w3rx-r6r6-pgpr",
+          "line": null,
+          "cwe": "CWE-835",
+          "owasp": null,
+          "raw_severity": "High",
+          "description": "Package image-size (range: >=0.6.3 <=2.0.2) has vulnerability: image-size: ICNS parser allows denial of service through an infinite loop. See advisory: https://github.com/advisories/GHSA-w3rx-r6r6-pgpr",
+          "evidence": [
+            "Dependency: image-size",
+            "Advisory: https://github.com/advisories/GHSA-w3rx-r6r6-pgpr"
+          ],
+          "cvss_vector": null,
+          "cvss_score": null,
+          "cvss_severity": null,
+          "affected_component": null,
+          "remediation": null,
+          "confidence": "medium",
+          "poc_steps": [],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "Dependency: image-size",
+        "Advisory: https://github.com/advisories/GHSA-5p2g-fcmc-qvqq",
+        "Dependency: image-size",
+        "Advisory: https://github.com/advisories/GHSA-w3rx-r6r6-pgpr"
+      ]
+    },
+    {
+      "id": "ARGUS-CONFIRMED-003",
+      "key": "CWE-697::package.json",
+      "title": "ip-address: ip-address: Address6.isLinkLocal() recognizes fe80::/64 rather than fe80::/10, allowing SSRF and trust-boundary bypass to on-link hosts",
+      "cwe": "CWE-697",
+      "owasp": null,
+      "severity": "Medium",
+      "cvss_score": 6.5,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+      "affected_component": "package.json",
+      "description": "Package ip-address (range: <=10.5.0) has vulnerability: ip-address: Address6.isLinkLocal() recognizes fe80::/64 rather than fe80::/10, allowing SSRF and trust-boundary bypass to on-link hosts. See advisory: https://github.com/advisories/GHSA-rpw4-54j3-4h4q",
+      "remediation": "Apply input sanitization, strict boundary checks, and defensive controls.",
+      "confidence": "medium",
+      "tools": [
+        "npm-audit"
+      ],
+      "evidence_count": 2,
+      "findings": [
+        {
+          "id": "npm-audit-ip-address-4",
+          "title": "ip-address: ip-address: Address6.isLinkLocal() recognizes fe80::/64 rather than fe80::/10, allowing SSRF and trust-boundary bypass to on-link hosts",
+          "tool": "npm-audit",
+          "rule_id": "npm-1239948",
+          "file": "package.json",
+          "url": "https://github.com/advisories/GHSA-rpw4-54j3-4h4q",
+          "line": null,
+          "cwe": "CWE-697",
+          "owasp": null,
+          "raw_severity": "Medium",
+          "description": "Package ip-address (range: <=10.5.0) has vulnerability: ip-address: Address6.isLinkLocal() recognizes fe80::/64 rather than fe80::/10, allowing SSRF and trust-boundary bypass to on-link hosts. See advisory: https://github.com/advisories/GHSA-rpw4-54j3-4h4q",
+          "evidence": [
+            "Dependency: ip-address",
+            "Advisory: https://github.com/advisories/GHSA-rpw4-54j3-4h4q"
+          ],
+          "cvss_vector": null,
+          "cvss_score": null,
+          "cvss_severity": null,
+          "affected_component": null,
+          "remediation": null,
+          "confidence": "medium",
+          "poc_steps": [],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "Dependency: ip-address",
+        "Advisory: https://github.com/advisories/GHSA-rpw4-54j3-4h4q"
+      ]
+    },
+    {
+      "id": "ARGUS-CONFIRMED-004",
+      "key": "CWE-918::package.json",
+      "title": "ip-address: ip-address: no classifier recognizes the NAT64 local-use range 64:ff9b:1::/48, allowing SSRF and trust-boundary bypass",
+      "cwe": "CWE-918",
+      "owasp": "A10:2021-Server-Side Request Forgery",
+      "severity": "Medium",
+      "cvss_score": 6.5,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+      "affected_component": "package.json",
+      "description": "Package ip-address (range: >=10.2.0 <=10.5.0) has vulnerability: ip-address: no classifier recognizes the NAT64 local-use range 64:ff9b:1::/48, allowing SSRF and trust-boundary bypass. See advisory: https://github.com/advisories/GHSA-2vr4-cq9g-pvrc",
+      "remediation": "Apply input sanitization, strict boundary checks, and defensive controls.",
+      "confidence": "medium",
+      "tools": [
+        "npm-audit"
+      ],
+      "evidence_count": 2,
+      "findings": [
+        {
+          "id": "npm-audit-ip-address-5",
+          "title": "ip-address: ip-address: no classifier recognizes the NAT64 local-use range 64:ff9b:1::/48, allowing SSRF and trust-boundary bypass",
+          "tool": "npm-audit",
+          "rule_id": "npm-1239949",
+          "file": "package.json",
+          "url": "https://github.com/advisories/GHSA-2vr4-cq9g-pvrc",
+          "line": null,
+          "cwe": "CWE-918",
+          "owasp": "A10:2021-Server-Side Request Forgery",
+          "raw_severity": "Medium",
+          "description": "Package ip-address (range: >=10.2.0 <=10.5.0) has vulnerability: ip-address: no classifier recognizes the NAT64 local-use range 64:ff9b:1::/48, allowing SSRF and trust-boundary bypass. See advisory: https://github.com/advisories/GHSA-2vr4-cq9g-pvrc",
+          "evidence": [
+            "Dependency: ip-address",
+            "Advisory: https://github.com/advisories/GHSA-2vr4-cq9g-pvrc"
+          ],
+          "cvss_vector": null,
+          "cvss_score": null,
+          "cvss_severity": null,
+          "affected_component": null,
+          "remediation": null,
+          "confidence": "medium",
+          "poc_steps": [],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "Dependency: ip-address",
+        "Advisory: https://github.com/advisories/GHSA-2vr4-cq9g-pvrc"
+      ]
+    },
+    {
+      "id": "ARGUS-CONFIRMED-005",
+      "key": "CWE-407::package.json",
+      "title": "stream-json: stream-json: pick/ignore/filter/replace filters are O(depth\u00b2) on nested input \u2014 small crafted JSON blocks the event loop for seconds\u2192minutes (DoS)",
+      "cwe": "CWE-407",
+      "owasp": null,
+      "severity": "Medium",
+      "cvss_score": 6.5,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+      "affected_component": "package.json",
+      "description": "Package stream-json (range: <=3.4.0) has vulnerability: stream-json: pick/ignore/filter/replace filters are O(depth\u00b2) on nested input \u2014 small crafted JSON blocks the event loop for seconds\u2192minutes (DoS). See advisory: https://github.com/advisories/GHSA-528h-pc64-c93x",
+      "remediation": "Apply input sanitization, strict boundary checks, and defensive controls.",
+      "confidence": "medium",
+      "tools": [
+        "npm-audit"
+      ],
+      "evidence_count": 2,
+      "findings": [
+        {
+          "id": "npm-audit-stream-json-6",
+          "title": "stream-json: stream-json: pick/ignore/filter/replace filters are O(depth\u00b2) on nested input \u2014 small crafted JSON blocks the event loop for seconds\u2192minutes (DoS)",
+          "tool": "npm-audit",
+          "rule_id": "npm-1164823",
+          "file": "package.json",
+          "url": "https://github.com/advisories/GHSA-528h-pc64-c93x",
+          "line": null,
+          "cwe": "CWE-407",
+          "owasp": null,
+          "raw_severity": "Medium",
+          "description": "Package stream-json (range: <=3.4.0) has vulnerability: stream-json: pick/ignore/filter/replace filters are O(depth\u00b2) on nested input \u2014 small crafted JSON blocks the event loop for seconds\u2192minutes (DoS). See advisory: https://github.com/advisories/GHSA-528h-pc64-c93x",
+          "evidence": [
+            "Dependency: stream-json",
+            "Advisory: https://github.com/advisories/GHSA-528h-pc64-c93x"
+          ],
+          "cvss_vector": null,
+          "cvss_score": null,
+          "cvss_severity": null,
+          "affected_component": null,
+          "remediation": null,
+          "confidence": "medium",
+          "poc_steps": [],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "Dependency: stream-json",
+        "Advisory: https://github.com/advisories/GHSA-528h-pc64-c93x"
+      ]
+    },
+    {
+      "id": "ARGUS-CONFIRMED-006",
+      "key": "CWE-248::package.json",
+      "title": "undici: undici vulnerable to Denial of Service via unhandled error in WebSocket permessage-deflate decompression",
+      "cwe": "CWE-248",
+      "owasp": null,
+      "severity": "Medium",
+      "cvss_score": 6.5,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+      "affected_component": "package.json",
+      "description": "Package undici (range: >=7.28.0 <7.29.1) has vulnerability: undici vulnerable to Denial of Service via unhandled error in WebSocket permessage-deflate decompression. See advisory: https://github.com/advisories/GHSA-3wwx-pv8p-q78v",
+      "remediation": "Apply input sanitization, strict boundary checks, and defensive controls.",
+      "confidence": "medium",
+      "tools": [
+        "npm-audit"
+      ],
+      "evidence_count": 2,
+      "findings": [
+        {
+          "id": "npm-audit-undici-7",
+          "title": "undici: undici vulnerable to Denial of Service via unhandled error in WebSocket permessage-deflate decompression",
+          "tool": "npm-audit",
+          "rule_id": "npm-1239933",
+          "file": "package.json",
+          "url": "https://github.com/advisories/GHSA-3wwx-pv8p-q78v",
+          "line": null,
+          "cwe": "CWE-248",
+          "owasp": null,
+          "raw_severity": "Medium",
+          "description": "Package undici (range: >=7.28.0 <7.29.1) has vulnerability: undici vulnerable to Denial of Service via unhandled error in WebSocket permessage-deflate decompression. See advisory: https://github.com/advisories/GHSA-3wwx-pv8p-q78v",
+          "evidence": [
+            "Dependency: undici",
+            "Advisory: https://github.com/advisories/GHSA-3wwx-pv8p-q78v"
+          ],
+          "cvss_vector": null,
+          "cvss_score": null,
+          "cvss_severity": null,
+          "affected_component": null,
+          "remediation": null,
+          "confidence": "medium",
+          "poc_steps": [],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "Dependency: undici",
+        "Advisory: https://github.com/advisories/GHSA-3wwx-pv8p-q78v"
+      ]
+    },
+    {
+      "id": "ARGUS-CONFIRMED-007",
+      "key": "CWE-787::package.json",
+      "title": "uuid: uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+      "cwe": "CWE-787",
+      "owasp": null,
+      "severity": "Medium",
+      "cvss_score": 6.5,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+      "affected_component": "package.json",
+      "description": "Package uuid (range: <11.1.1) has vulnerability: uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided. See advisory: https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+      "remediation": "Apply input sanitization, strict boundary checks, and defensive controls.",
+      "confidence": "medium",
+      "tools": [
+        "npm-audit"
+      ],
+      "evidence_count": 2,
+      "findings": [
+        {
+          "id": "npm-audit-uuid-8",
+          "title": "uuid: uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+          "tool": "npm-audit",
+          "rule_id": "npm-1119441",
+          "file": "package.json",
+          "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "line": null,
+          "cwe": "CWE-787",
+          "owasp": null,
+          "raw_severity": "Medium",
+          "description": "Package uuid (range: <11.1.1) has vulnerability: uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided. See advisory: https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "evidence": [
+            "Dependency: uuid",
+            "Advisory: https://github.com/advisories/GHSA-w5hq-g745-h8pq"
+          ],
+          "cvss_vector": null,
+          "cvss_score": null,
+          "cvss_severity": null,
+          "affected_component": null,
+          "remediation": null,
+          "confidence": "medium",
+          "poc_steps": [],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "Dependency: uuid",
+        "Advisory: https://github.com/advisories/GHSA-w5hq-g745-h8pq"
+      ]
+    },
+    {
+      "id": "ARGUS-CONFIRMED-011",
+      "key": "CWE-20::server/_shared/llm-sanitize.js",
+      "title": "Indirect Prompt Injection Blocklist Bypass in LLM News Summarizer",
+      "cwe": "CWE-20",
+      "owasp": "OWASP-LLM01-Prompt-Injection",
+      "severity": "Medium",
+      "cvss_score": 6.5,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+      "affected_component": "server/_shared/llm-sanitize.js, api/chat-analyst.ts",
+      "description": "External news feeds and user search parameters are passed into LLM prompts after passing through sanitizeForPrompt(). The sanitizer relies solely on static regex blocklists for English override phrases ('ignore previous instructions', etc.). Novel semantic paraphrasing, multilingual instructions, and indirect prompt injections inside external RSS feeds pass through completely unaltered.",
+      "remediation": "Implement structural delimiters (such as XML tags with strict schema parsing) around untrusted external content, enforce output validation, and avoid granting sensitive tool-execution capabilities to LLM analysts ingesting raw web feeds.",
+      "confidence": "low",
+      "tools": [
+        "code-audit"
+      ],
+      "evidence_count": 3,
+      "findings": [
+        {
+          "id": "ARGUS-VULN-004",
+          "title": "Indirect Prompt Injection Blocklist Bypass in LLM News Summarizer",
+          "tool": "code-audit",
+          "rule_id": "llm-prompt-injection-regex-bypass",
+          "file": "server/_shared/llm-sanitize.js",
+          "url": null,
+          "line": 31,
+          "cwe": "CWE-20",
+          "owasp": "OWASP-LLM01-Prompt-Injection",
+          "raw_severity": "Medium",
+          "description": "External news feeds and user search parameters are passed into LLM prompts after passing through sanitizeForPrompt(). The sanitizer relies solely on static regex blocklists for English override phrases ('ignore previous instructions', etc.). Novel semantic paraphrasing, multilingual instructions, and indirect prompt injections inside external RSS feeds pass through completely unaltered.",
+          "evidence": [
+            "server/_shared/llm-sanitize.js:31-72 regex patterns",
+            "Comments in source explicitly state: 'Prompt-injection blocklists are inherently bypassable'",
+            "Verified non-destructive PoC in argus/poc/poc_llm_prompt_injection.py"
+          ],
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+          "cvss_score": 6.5,
+          "cvss_severity": null,
+          "affected_component": "server/_shared/llm-sanitize.js, api/chat-analyst.ts",
+          "remediation": "Implement structural delimiters (such as XML tags with strict schema parsing) around untrusted external content, enforce output validation, and avoid granting sensitive tool-execution capabilities to LLM analysts ingesting raw web feeds.",
+          "confidence": "high",
+          "poc_steps": [
+            "Inspect server/_shared/llm-sanitize.js",
+            "Test semantic phrasing variations against INJECTION_PATTERNS",
+            "Run python -m argus.poc.poc_llm_prompt_injection"
+          ],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "server/_shared/llm-sanitize.js:31-72 regex patterns",
+        "Comments in source explicitly state: 'Prompt-injection blocklists are inherently bypassable'",
+        "Verified non-destructive PoC in argus/poc/poc_llm_prompt_injection.py"
+      ]
+    },
+    {
+      "id": "ARGUS-CONFIRMED-010",
+      "key": "CWE-918::api/mcp-proxy.ts",
+      "title": "Server-Side Request Forgery (SSRF) via DNS Rebinding TOCTOU in MCP Proxy",
+      "cwe": "CWE-918",
+      "owasp": "A10:2021-Server-Side Request Forgery",
+      "severity": "Medium",
+      "cvss_score": 6.3,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:N/A:N",
+      "affected_component": "api/mcp-proxy.ts, api/_notification-webhook-ssrf.ts",
+      "description": "api/mcp-proxy.ts verifies target host IP addresses via Cloudflare DNS-over-HTTPS before outbound calls. However, Vercel Edge Runtime fetch() does not support socket pinning or pre-resolved IP connections. An attacker controlling a custom domain with zero TTL can exploit the Time-of-Check to Time-of-Use (TOCTOU) window between DNS validation and fetch connection to bind to internal/link-local cloud metadata services.",
+      "remediation": "Migrate the MCP proxy and webhook fetchers to a Node.js runtime environment supporting custom HTTP agents with socket-level IP address pinning (e.g., using `undici` or `agentkeepalive` with pre-vetted socket binding).",
+      "confidence": "low",
+      "tools": [
+        "code-audit"
+      ],
+      "evidence_count": 3,
+      "findings": [
+        {
+          "id": "ARGUS-VULN-003",
+          "title": "Server-Side Request Forgery (SSRF) via DNS Rebinding TOCTOU in MCP Proxy",
+          "tool": "code-audit",
+          "rule_id": "ssrf-dns-rebinding-socket-pinning",
+          "file": "api/mcp-proxy.ts",
+          "url": null,
+          "line": 400,
+          "cwe": "CWE-918",
+          "owasp": "A10:2021-Server-Side Request Forgery",
+          "raw_severity": "Medium",
+          "description": "api/mcp-proxy.ts verifies target host IP addresses via Cloudflare DNS-over-HTTPS before outbound calls. However, Vercel Edge Runtime fetch() does not support socket pinning or pre-resolved IP connections. An attacker controlling a custom domain with zero TTL can exploit the Time-of-Check to Time-of-Use (TOCTOU) window between DNS validation and fetch connection to bind to internal/link-local cloud metadata services.",
+          "evidence": [
+            "api/mcp-proxy.ts: pre-resolution step separate from edge fetch()",
+            "SECURITY.md Line 52 acknowledged residual (draft GHSA-887j-p88r-qmm9)",
+            "Verified non-destructive PoC in argus/poc/poc_ssrf_dns_rebinding_audit.py"
+          ],
+          "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:N/A:N",
+          "cvss_score": 6.3,
+          "cvss_severity": null,
+          "affected_component": "api/mcp-proxy.ts, api/_notification-webhook-ssrf.ts",
+          "remediation": "Migrate the MCP proxy and webhook fetchers to a Node.js runtime environment supporting custom HTTP agents with socket-level IP address pinning (e.g., using `undici` or `agentkeepalive` with pre-vetted socket binding).",
+          "confidence": "high",
+          "poc_steps": [
+            "Review SECURITY.md and api/mcp-proxy.ts",
+            "Audit DNS validation vs edge fetch separation",
+            "Run python -m argus.poc.poc_ssrf_dns_rebinding_audit"
+          ],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "api/mcp-proxy.ts: pre-resolution step separate from edge fetch()",
+        "SECURITY.md Line 52 acknowledged residual (draft GHSA-887j-p88r-qmm9)",
+        "Verified non-destructive PoC in argus/poc/poc_ssrf_dns_rebinding_audit.py"
+      ]
+    },
+    {
+      "id": "ARGUS-CONFIRMED-008",
+      "key": "CWE-79::src/utils/dom-utils.ts",
+      "title": "DOM-based Cross-Site Scripting (XSS) via Bypassed Trusted Types in dom-utils.ts",
+      "cwe": "CWE-79",
+      "owasp": "A03:2021-Injection",
+      "severity": "Medium",
+      "cvss_score": 6.1,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "affected_component": "src/utils/dom-utils.ts, StoryModal.ts, TransitChart.ts",
+      "description": "trustedHtml(html, reason) performs an uninspected type-cast (`html as TrustedHtml`) with no sanitization or DOMPurify validation. Across the codebase, over 350 call sites supply the static placeholder reason 'legacy direct innerHTML migration' to bypass Trusted Types, allowing unescaped dynamic HTML from feeds, URL parameters, and external data to reach setTrustedHtml (innerHTML).",
+      "remediation": "Implement a real sanitizer (such as DOMPurify) inside trustedHtml() or safeHtml(). Deprecate the 'legacy direct innerHTML migration' escape hatch and enforce strict TrustedHTML policies.",
+      "confidence": "low",
+      "tools": [
+        "code-audit"
+      ],
+      "evidence_count": 3,
+      "findings": [
+        {
+          "id": "ARGUS-VULN-001",
+          "title": "DOM-based Cross-Site Scripting (XSS) via Bypassed Trusted Types in dom-utils.ts",
+          "tool": "code-audit",
+          "rule_id": "dom-xss-trusted-html-bypass",
+          "file": "src/utils/dom-utils.ts",
+          "url": null,
+          "line": 65,
+          "cwe": "CWE-79",
+          "owasp": "A03:2021-Injection",
+          "raw_severity": "Medium",
+          "description": "trustedHtml(html, reason) performs an uninspected type-cast (`html as TrustedHtml`) with no sanitization or DOMPurify validation. Across the codebase, over 350 call sites supply the static placeholder reason 'legacy direct innerHTML migration' to bypass Trusted Types, allowing unescaped dynamic HTML from feeds, URL parameters, and external data to reach setTrustedHtml (innerHTML).",
+          "evidence": [
+            "src/utils/dom-utils.ts:65: trustedHtml(html, reason) { return html as TrustedHtml; }",
+            "357 call sites use 'legacy direct innerHTML migration' as bypass reason",
+            "Verified non-destructive PoC in argus/poc/poc_xss_trusted_html.py"
+          ],
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "cvss_score": 6.1,
+          "cvss_severity": null,
+          "affected_component": "src/utils/dom-utils.ts, StoryModal.ts, TransitChart.ts",
+          "remediation": "Implement a real sanitizer (such as DOMPurify) inside trustedHtml() or safeHtml(). Deprecate the 'legacy direct innerHTML migration' escape hatch and enforce strict TrustedHTML policies.",
+          "confidence": "high",
+          "poc_steps": [
+            "Inspect src/utils/dom-utils.ts lines 65-74",
+            "Verify trustedHtml only checks `!reason.trim()` and returns unescaped string",
+            "Inspect 350+ usages in src/components and src/utils",
+            "Run python -m argus.poc.poc_xss_trusted_html"
+          ],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "src/utils/dom-utils.ts:65: trustedHtml(html, reason) { return html as TrustedHtml; }",
+        "357 call sites use 'legacy direct innerHTML migration' as bypass reason",
+        "Verified non-destructive PoC in argus/poc/poc_xss_trusted_html.py"
+      ]
+    },
+    {
+      "id": "ARGUS-CONFIRMED-012",
+      "key": "CWE-269::worldmonitor/middleware.ts",
+      "title": "Bot and Crawler Filter Bypass via Heuristic API Key Header",
+      "cwe": "CWE-269",
+      "owasp": "A07:2021-Identification and Authentication Failures",
+      "severity": "Medium",
+      "cvss_score": 5.3,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "affected_component": "worldmonitor/middleware.ts",
+      "description": "In middleware.ts, requests from automated scrapers (matching BOT_UA or short UA) are blocked with HTTP 403. However, the edge middleware checks only the structural shape of the x-api-key / x-worldmonitor-key header (matching /^wm_[a-f0-9]{40,64}$/). Any client supplying a synthetic key matching this regex immediately returns without triggering the bot block, completely bypassing the crawler filter at the edge.",
+      "remediation": "Do not bypass crawler/bot rate limits solely based on unverified client-supplied header formats. Either perform cryptographic token verification at the edge or apply bot rate limits across all incoming requests.",
+      "confidence": "low",
+      "tools": [
+        "code-audit"
+      ],
+      "evidence_count": 2,
+      "findings": [
+        {
+          "id": "ARGUS-VULN-005",
+          "title": "Bot and Crawler Filter Bypass via Heuristic API Key Header",
+          "tool": "code-audit",
+          "rule_id": "middleware-bot-filter-bypass",
+          "file": "worldmonitor/middleware.ts",
+          "url": null,
+          "line": 346,
+          "cwe": "CWE-269",
+          "owasp": "A07:2021-Identification and Authentication Failures",
+          "raw_severity": "Medium",
+          "description": "In middleware.ts, requests from automated scrapers (matching BOT_UA or short UA) are blocked with HTTP 403. However, the edge middleware checks only the structural shape of the x-api-key / x-worldmonitor-key header (matching /^wm_[a-f0-9]{40,64}$/). Any client supplying a synthetic key matching this regex immediately returns without triggering the bot block, completely bypassing the crawler filter at the edge.",
+          "evidence": [
+            "middleware.ts:346-353 regex heuristic bypass",
+            "Verified non-destructive PoC in argus/poc/poc_bot_filter_bypass.py"
+          ],
+          "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+          "cvss_score": 5.3,
+          "cvss_severity": null,
+          "affected_component": "worldmonitor/middleware.ts",
+          "remediation": "Do not bypass crawler/bot rate limits solely based on unverified client-supplied header formats. Either perform cryptographic token verification at the edge or apply bot rate limits across all incoming requests.",
+          "confidence": "high",
+          "poc_steps": [
+            "Inspect middleware.ts lines 346-353",
+            "Verify synthetic key matching regex passes through middleware",
+            "Run python -m argus.poc.poc_bot_filter_bypass"
+          ],
+          "status": "confirmed"
+        }
+      ],
+      "poc_file": null,
+      "evidence_paths": [
+        "middleware.ts:346-353 regex heuristic bypass",
+        "Verified non-destructive PoC in argus/poc/poc_bot_filter_bypass.py"
+      ]
+    }
+  ]
+}

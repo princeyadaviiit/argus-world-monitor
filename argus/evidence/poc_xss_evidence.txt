@@ -1,0 +1,22 @@
+=== ARGUS Evidence: DOM XSS Trusted Types Bypass ===
+Target Vulnerability: CWE-79 / OWASP A03:2021
+Vulnerable File: worldmonitor/src/utils/dom-utils.ts
+Mechanism: trustedHtml() performs no sanitization, merely type-casting `html as TrustedHtml`.
+Audit Reason Abuse: 'legacy direct innerHTML migration' used at 357 distinct call sites.
+
+Sample Call Sites:
+src\live-channels-window.ts:139: setTrustedHtml(listEl, trustedHtml('', "legacy direct innerHTML migration"));
+src\live-channels-window.ts:221: setTrustedHtml(row, trustedHtml('', "legacy direct innerHTML migration"));
+src\live-channels-window.ts:322: setTrustedHtml(tabBar, trustedHtml('', "legacy direct innerHTML migration"));
+src\live-channels-window.ts:349: setTrustedHtml(tabContents, trustedHtml('', "legacy direct innerHTML migration"));
+src\live-channels-window.ts:473: `, "legacy direct innerHTML migration"));
+src\settings-main.ts:140: setTrustedHtml(nav, trustedHtml(items.join(''), "legacy direct innerHTML migration"));
+src\settings-main.ts:255: `, "legacy direct innerHTML migration"));
+src\settings-main.ts:335: `, "legacy direct innerHTML migration"));
+src\settings-main.ts:543: setTrustedHtml(select, trustedHtml('<option value="" disabled selected>Set Ollama URL first</option>', "legacy direct innerHTML migration"));
+src\settings-main.ts:579: ).join(''), "legacy direct innerHTML migration"));
+
+Simulated Injection Vector:
+Payload: <img src=x onerror="console.warn('ARGUS_CANARY_XSS_TRIGGERED')">
+Resulting DOM write: setTrustedHtml(targetElement, trustedHtml('<img src=x onerror="console.warn('ARGUS_CANARY_XSS_TRIGGERED')">', 'legacy direct innerHTML migration'));
+Conclusion: Input passed through trustedHtml with the legacy migration reason bypasses browser XSS filters and writes raw unsanitized HTML.

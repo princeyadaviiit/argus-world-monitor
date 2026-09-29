@@ -1,0 +1,682 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@clerk/clerk-js": {
+      "name": "@clerk/clerk-js",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "@solana/wallet-adapter-base",
+        "@solana/wallet-adapter-react",
+        "@solana/wallet-standard"
+      ],
+      "effects": [],
+      "range": ">=5.115.0-snapshot.v20251212000700",
+      "nodes": [
+        "node_modules/@clerk/clerk-js"
+      ],
+      "fixAvailable": {
+        "name": "@clerk/clerk-js",
+        "version": "5.114.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@deck.gl/carto": {
+      "name": "@deck.gl/carto",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@deck.gl/geo-layers"
+      ],
+      "effects": [],
+      "range": ">=8.10.0-alpha.1",
+      "nodes": [
+        "node_modules/@deck.gl/carto"
+      ],
+      "fixAvailable": true
+    },
+    "@deck.gl/geo-layers": {
+      "name": "@deck.gl/geo-layers",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@deck.gl/mesh-layers",
+        "@loaders.gl/3d-tiles",
+        "@luma.gl/gltf"
+      ],
+      "effects": [
+        "@deck.gl/carto",
+        "deck.gl"
+      ],
+      "range": ">=8.6.6",
+      "nodes": [
+        "node_modules/@deck.gl/geo-layers"
+      ],
+      "fixAvailable": {
+        "name": "deck.gl",
+        "version": "8.9.36",
+        "isSemVerMajor": true
+      }
+    },
+    "@deck.gl/mesh-layers": {
+      "name": "@deck.gl/mesh-layers",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@loaders.gl/gltf",
+        "@luma.gl/gltf"
+      ],
+      "effects": [],
+      "range": ">=8.6.6",
+      "nodes": [
+        "node_modules/@deck.gl/mesh-layers"
+      ],
+      "fixAvailable": true
+    },
+    "@loaders.gl/3d-tiles": {
+      "name": "@loaders.gl/3d-tiles",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@loaders.gl/gltf"
+      ],
+      "effects": [
+        "@deck.gl/geo-layers"
+      ],
+      "range": ">=3.1.0-alpha.1",
+      "nodes": [
+        "node_modules/@loaders.gl/3d-tiles"
+      ],
+      "fixAvailable": {
+        "name": "deck.gl",
+        "version": "8.9.36",
+        "isSemVerMajor": true
+      }
+    },
+    "@loaders.gl/gltf": {
+      "name": "@loaders.gl/gltf",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@loaders.gl/textures"
+      ],
+      "effects": [
+        "@deck.gl/mesh-layers",
+        "@loaders.gl/3d-tiles",
+        "@luma.gl/gltf"
+      ],
+      "range": ">=3.1.0-alpha.1",
+      "nodes": [
+        "node_modules/@loaders.gl/gltf",
+        "node_modules/@luma.gl/gltf/node_modules/@loaders.gl/gltf"
+      ],
+      "fixAvailable": {
+        "name": "deck.gl",
+        "version": "8.9.36",
+        "isSemVerMajor": true
+      }
+    },
+    "@loaders.gl/textures": {
+      "name": "@loaders.gl/textures",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "texture-compressor"
+      ],
+      "effects": [
+        "@loaders.gl/gltf",
+        "@luma.gl/gltf"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@loaders.gl/textures",
+        "node_modules/@luma.gl/gltf/node_modules/@loaders.gl/textures"
+      ],
+      "fixAvailable": {
+        "name": "deck.gl",
+        "version": "8.9.36",
+        "isSemVerMajor": true
+      }
+    },
+    "@luma.gl/gltf": {
+      "name": "@luma.gl/gltf",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@loaders.gl/gltf",
+        "@loaders.gl/textures"
+      ],
+      "effects": [
+        "@deck.gl/geo-layers",
+        "@deck.gl/mesh-layers"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@luma.gl/gltf"
+      ],
+      "fixAvailable": {
+        "name": "deck.gl",
+        "version": "8.9.36",
+        "isSemVerMajor": true
+      }
+    },
+    "@solana-mobile/mobile-wallet-adapter-protocol-web3js": {
+      "name": "@solana-mobile/mobile-wallet-adapter-protocol-web3js",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@solana/web3.js"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/@solana-mobile/mobile-wallet-adapter-protocol-web3js"
+      ],
+      "fixAvailable": true
+    },
+    "@solana-mobile/wallet-adapter-mobile": {
+      "name": "@solana-mobile/wallet-adapter-mobile",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@solana-mobile/mobile-wallet-adapter-protocol-web3js",
+        "@solana/wallet-adapter-base",
+        "@solana/web3.js"
+      ],
+      "effects": [
+        "@solana/wallet-adapter-react"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@solana-mobile/wallet-adapter-mobile"
+      ],
+      "fixAvailable": true
+    },
+    "@solana/wallet-adapter-base": {
+      "name": "@solana/wallet-adapter-base",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@solana/web3.js"
+      ],
+      "effects": [
+        "@clerk/clerk-js",
+        "@solana/wallet-standard-wallet-adapter-react"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@solana/wallet-adapter-base"
+      ],
+      "fixAvailable": {
+        "name": "@clerk/clerk-js",
+        "version": "5.114.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@solana/wallet-adapter-react": {
+      "name": "@solana/wallet-adapter-react",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@solana-mobile/wallet-adapter-mobile",
+        "@solana/wallet-adapter-base",
+        "@solana/wallet-standard-wallet-adapter-react",
+        "@solana/web3.js"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/@solana/wallet-adapter-react"
+      ],
+      "fixAvailable": true
+    },
+    "@solana/wallet-standard": {
+      "name": "@solana/wallet-standard",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@solana/wallet-standard-wallet-adapter"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/@solana/wallet-standard"
+      ],
+      "fixAvailable": true
+    },
+    "@solana/wallet-standard-wallet-adapter": {
+      "name": "@solana/wallet-standard-wallet-adapter",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@solana/wallet-standard-wallet-adapter-base",
+        "@solana/wallet-standard-wallet-adapter-react"
+      ],
+      "effects": [
+        "@solana/wallet-standard"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@solana/wallet-standard-wallet-adapter"
+      ],
+      "fixAvailable": true
+    },
+    "@solana/wallet-standard-wallet-adapter-base": {
+      "name": "@solana/wallet-standard-wallet-adapter-base",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@solana/wallet-adapter-base",
+        "@solana/web3.js"
+      ],
+      "effects": [
+        "@solana/wallet-standard-wallet-adapter"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@solana/wallet-standard-wallet-adapter-base"
+      ],
+      "fixAvailable": true
+    },
+    "@solana/wallet-standard-wallet-adapter-react": {
+      "name": "@solana/wallet-standard-wallet-adapter-react",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@solana/wallet-adapter-base",
+        "@solana/wallet-standard-wallet-adapter-base"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/@solana/wallet-standard-wallet-adapter-react"
+      ],
+      "fixAvailable": true
+    },
+    "@solana/web3.js": {
+      "name": "@solana/web3.js",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "jayson"
+      ],
+      "effects": [
+        "@solana-mobile/mobile-wallet-adapter-protocol-web3js",
+        "@solana-mobile/wallet-adapter-mobile",
+        "@solana/wallet-adapter-base",
+        "@solana/wallet-adapter-react",
+        "@solana/wallet-standard-wallet-adapter-base"
+      ],
+      "range": "<=0.0.0-pr-29130 || 0.0.4 - 1.99.0",
+      "nodes": [
+        "node_modules/@solana/web3.js"
+      ],
+      "fixAvailable": {
+        "name": "@clerk/clerk-js",
+        "version": "5.114.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@vitest/mocker": {
+      "name": "@vitest/mocker",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1193684,
+          "name": "@vitest/mocker",
+          "dependency": "@vitest/mocker",
+          "title": "Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock",
+          "url": "https://github.com/advisories/GHSA-82fw-gwwq-j7x9",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+          },
+          "range": ">=2.1.0 <4.1.11"
+        }
+      ],
+      "effects": [
+        "vitest"
+      ],
+      "range": "2.1.0 - 4.1.10",
+      "nodes": [
+        "node_modules/@vitest/mocker"
+      ],
+      "fixAvailable": true
+    },
+    "deck.gl": {
+      "name": "deck.gl",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@deck.gl/carto",
+        "@deck.gl/geo-layers",
+        "@deck.gl/mesh-layers"
+      ],
+      "effects": [],
+      "range": ">=8.10.0-alpha.1",
+      "nodes": [
+        "node_modules/deck.gl"
+      ],
+      "fixAvailable": {
+        "name": "deck.gl",
+        "version": "8.9.36",
+        "isSemVerMajor": true
+      }
+    },
+    "exceljs": {
+      "name": "exceljs",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "uuid"
+      ],
+      "effects": [],
+      "range": ">=3.5.0",
+      "nodes": [
+        "node_modules/exceljs"
+      ],
+      "fixAvailable": {
+        "name": "exceljs",
+        "version": "3.4.0",
+        "isSemVerMajor": true
+      }
+    },
+    "image-size": {
+      "name": "image-size",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1239765,
+          "name": "image-size",
+          "dependency": "image-size",
+          "title": "image-size: JXL and HEIF parsers allow denial of service through infinite loops",
+          "url": "https://github.com/advisories/GHSA-5p2g-fcmc-qvqq",
+          "severity": "high",
+          "cwe": [
+            "CWE-835"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=1.2.0 <=2.0.2"
+        },
+        {
+          "source": 1239766,
+          "name": "image-size",
+          "dependency": "image-size",
+          "title": "image-size: ICNS parser allows denial of service through an infinite loop",
+          "url": "https://github.com/advisories/GHSA-w3rx-r6r6-pgpr",
+          "severity": "high",
+          "cwe": [
+            "CWE-835"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=0.6.3 <=2.0.2"
+        }
+      ],
+      "effects": [
+        "texture-compressor"
+      ],
+      "range": "0.6.3 - 2.0.2",
+      "nodes": [
+        "node_modules/image-size",
+        "node_modules/texture-compressor/node_modules/image-size"
+      ],
+      "fixAvailable": {
+        "name": "deck.gl",
+        "version": "8.9.36",
+        "isSemVerMajor": true
+      }
+    },
+    "ip-address": {
+      "name": "ip-address",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1239948,
+          "name": "ip-address",
+          "dependency": "ip-address",
+          "title": "ip-address: Address6.isLinkLocal() recognizes fe80::/64 rather than fe80::/10, allowing SSRF and trust-boundary bypass to on-link hosts",
+          "url": "https://github.com/advisories/GHSA-rpw4-54j3-4h4q",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-697",
+            "CWE-918"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=10.5.0"
+        },
+        {
+          "source": 1239949,
+          "name": "ip-address",
+          "dependency": "ip-address",
+          "title": "ip-address: no classifier recognizes the NAT64 local-use range 64:ff9b:1::/48, allowing SSRF and trust-boundary bypass",
+          "url": "https://github.com/advisories/GHSA-2vr4-cq9g-pvrc",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-918"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=10.2.0 <=10.5.0"
+        }
+      ],
+      "effects": [],
+      "range": "<=10.5.0",
+      "nodes": [
+        "node_modules/ip-address"
+      ],
+      "fixAvailable": true
+    },
+    "jayson": {
+      "name": "jayson",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "stream-json",
+        "uuid"
+      ],
+      "effects": [
+        "@solana/web3.js"
+      ],
+      "range": "2.0.6 - 4.3.0",
+      "nodes": [
+        "node_modules/jayson"
+      ],
+      "fixAvailable": {
+        "name": "@clerk/clerk-js",
+        "version": "5.114.1",
+        "isSemVerMajor": true
+      }
+    },
+    "stream-json": {
+      "name": "stream-json",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1164823,
+          "name": "stream-json",
+          "dependency": "stream-json",
+          "title": "stream-json: pick/ignore/filter/replace filters are O(depth²) on nested input — small crafted JSON blocks the event loop for seconds→minutes (DoS)",
+          "url": "https://github.com/advisories/GHSA-528h-pc64-c93x",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-407"
+          ],
+          "cvss": {
+            "score": 6.2,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=3.4.0"
+        }
+      ],
+      "effects": [
+        "jayson"
+      ],
+      "range": "<=3.4.0",
+      "nodes": [
+        "node_modules/stream-json"
+      ],
+      "fixAvailable": {
+        "name": "@clerk/clerk-js",
+        "version": "5.114.1",
+        "isSemVerMajor": true
+      }
+    },
+    "texture-compressor": {
+      "name": "texture-compressor",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "image-size"
+      ],
+      "effects": [
+        "@loaders.gl/textures"
+      ],
+      "range": ">=0.3.1",
+      "nodes": [
+        "node_modules/texture-compressor"
+      ],
+      "fixAvailable": {
+        "name": "deck.gl",
+        "version": "8.9.36",
+        "isSemVerMajor": true
+      }
+    },
+    "undici": {
+      "name": "undici",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        {
+          "source": 1239933,
+          "name": "undici",
+          "dependency": "undici",
+          "title": "undici vulnerable to Denial of Service via unhandled error in WebSocket permessage-deflate decompression",
+          "url": "https://github.com/advisories/GHSA-3wwx-pv8p-q78v",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-248"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=7.28.0 <7.29.1"
+        }
+      ],
+      "effects": [],
+      "range": "7.28.0 - 7.29.0",
+      "nodes": [
+        "node_modules/undici"
+      ],
+      "fixAvailable": {
+        "name": "undici",
+        "version": "7.30.0",
+        "isSemVerMajor": false
+      }
+    },
+    "uuid": {
+      "name": "uuid",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1119441,
+          "name": "uuid",
+          "dependency": "uuid",
+          "title": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+          "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-787",
+            "CWE-1285"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+          },
+          "range": "<11.1.1"
+        }
+      ],
+      "effects": [
+        "exceljs",
+        "jayson"
+      ],
+      "range": "<11.1.1",
+      "nodes": [
+        "node_modules/uuid"
+      ],
+      "fixAvailable": {
+        "name": "exceljs",
+        "version": "3.4.0",
+        "isSemVerMajor": true
+      }
+    },
+    "vitest": {
+      "name": "vitest",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "@vitest/mocker",
+        {
+          "source": 1193683,
+          "name": "vitest",
+          "dependency": "vitest",
+          "title": "Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock",
+          "url": "https://github.com/advisories/GHSA-82fw-gwwq-j7x9",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+          },
+          "range": ">=2.1.0 <4.1.11"
+        }
+      ],
+      "effects": [],
+      "range": "2.1.0-beta.1 - 4.1.10",
+      "nodes": [
+        "node_modules/vitest"
+      ],
+      "fixAvailable": true
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 18,
+      "high": 10,
+      "critical": 0,
+      "total": 28
+    },
+    "dependencies": {
+      "prod": 781,
+      "dev": 559,
+      "optional": 150,
+      "peer": 394,
+      "peerOptional": 0,
+      "total": 1795
+    }
+  }
+}
