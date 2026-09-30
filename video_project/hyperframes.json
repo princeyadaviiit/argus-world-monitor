@@ -1,0 +1,12 @@
+{
+  "name": "argus-world-monitor-video",
+  "version": "1.0.0",
+  "private": true,
+  "hyperframes": {
+    "composition": "index.html",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "duration": 60
+  }
+}
